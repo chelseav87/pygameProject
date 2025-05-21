@@ -21,13 +21,30 @@ scroll_speed = 4
 day_background = pygame.image.load("images/day_background.png")
 day_ground = pygame.image.load("images/day_ground.png")
 
+
+class Bird(pygame.sprite.Sprite):
+    def __init__(self, x, y):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.image.load("images/day_bird1.png")
+        self.rect = self.image.get_rect()
+        self.rect.center = (x, y)
+
+
+bird_group = pygame.sprite.Group()
+
+flappy = Bird(100, int(screen_height / 2))
+
+bird_group.add(flappy)
+
 run = True
 while run:
 
     clock.tick(fps)
 
-    # draw background
+    # draw background and bird sprite
     screen.blit(day_background, (0, 0))
+
+    bird_group.draw(screen)
 
     # draw and scroll ground
     screen.blit(day_ground, (ground_scroll, 728))
