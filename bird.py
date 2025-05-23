@@ -17,12 +17,16 @@ ground_scroll = 0
 scroll_speed = 4
 flying = False
 game_over = False
+obstacle_gap = 150
+obstacle_frequency = 1500
+last_obstacle = pygame.time.get_ticks()
 
 # load images
 day_background = pygame.image.load("images/day_background.png")
 day_ground = pygame.image.load("images/day_ground.png")
 
 
+# main object classes
 class Bird(pygame.sprite.Sprite):
     def __init__(self, x, y):
 
@@ -75,10 +79,25 @@ class Bird(pygame.sprite.Sprite):
             self.image = pygame.transform.rotate(self.images[self.index], -90)
 
 
+class Obstacle(pygame.sprite.Sprite):
+    def __init__(self, x, y, position):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.image.load("images/day_obstacle.png")
+        self.rect = self.image.get_rect()
+        if position == 1:
+            self.image = pygame.transform.flip(self.image, False, True)
+            self.rect.bottomleft = [x, y - int(obstacle_gap / 2)]
+        if position == -1:
+            self.rect.topleft = [x, y + int(obstacle_gap / 2)]
+
+    def update(self):
+        self.rect.x -= scroll_speed
+
+
 bird_group = pygame.sprite.Group()
+obstacle_group = pygame.sprite.Group()
 
 flappy = Bird(100, int(screen_height / 2))
-
 bird_group.add(flappy)
 
 run = True
@@ -86,11 +105,13 @@ while run:
 
     clock.tick(fps)
 
-    # draw background and bird
+    # draw background and objects
     screen.blit(day_background, (0, -155))
 
     bird_group.draw(screen)
     bird_group.update()
+    obstacle_group.draw(screen)
+    obstacle_group.update()
 
     # draw ground
     screen.blit(day_ground, (ground_scroll, 558))
@@ -101,6 +122,15 @@ while run:
         flying = False
 
     if not game_over:
+
+        # generate new obstacles
+        time_now = pygame.time.get_ticks()
+        if time_now - last_obstacle > obstacle_frequency:
+            btm_obstacle = Obstacle(300, int(screen_height / 2), -1)
+            top_obstacle = Obstacle(300, int(screen_height / 2), 1)
+            obstacle_group.add(btm_obstacle)
+            obstacle_group.add(top_obstacle)
+
         # scroll ground
         ground_scroll -= scroll_speed
         if abs(ground_scroll) > 35:
