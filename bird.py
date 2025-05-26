@@ -13,6 +13,12 @@ screen_height = 636
 screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption("Flappy Bird")
 
+# define font
+font = pygame.font.SysFont("Bauhaus 93", 60)
+
+# define colours
+white = (255, 255, 255)
+
 # define game variables
 ground_scroll = 0
 scroll_speed = 4
@@ -21,10 +27,17 @@ game_over = False
 obstacle_gap = 150
 obstacle_frequency = 1500
 last_obstacle = pygame.time.get_ticks() - obstacle_frequency
+score = 0
+pass_obstacle = False
 
 # load images
 day_background = pygame.image.load("images/day_background.png")
 day_ground = pygame.image.load("images/day_ground.png")
+
+
+def draw_text(text, font, text_colour, x, y):
+    img = font.render(text, True, text_colour)
+    screen.blit(img, (x, y))
 
 
 # main object classes
@@ -117,6 +130,19 @@ while run:
 
     # draw ground
     screen.blit(day_ground, (ground_scroll, 558))
+
+    # check and draw score
+    if len(obstacle_group) > 0:
+        if bird_group.sprites()[0].rect.left > obstacle_group.sprites()[0].rect.left \
+                and bird_group.sprites()[0].rect.right < obstacle_group.sprites()[0].rect.right \
+                and not pass_obstacle:
+            pass_obstacle = True
+        if pass_obstacle:
+            if bird_group.sprites()[0].rect.left > obstacle_group.sprites()[0].rect.right:
+                score += 1
+                pass_obstacle = False
+
+    draw_text(str(score), font, white, int(screen_width / 2 - 10), 20)
 
     # check for collision
     if pygame.sprite.groupcollide(bird_group, obstacle_group, False, False) or flappy.rect.top < 0:
