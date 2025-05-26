@@ -14,7 +14,7 @@ screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption("Flappy Bird")
 
 # define font
-font = pygame.font.SysFont("Bauhaus 93", 60)
+game_font = pygame.font.SysFont("Bauhaus 93", 60)
 
 # define colours
 white = (255, 255, 255)
@@ -33,11 +33,18 @@ pass_obstacle = False
 # load images
 day_background = pygame.image.load("images/day_background.png")
 day_ground = pygame.image.load("images/day_ground.png")
+day_restart = pygame.image.load("images/day_restart.png")
 
 
 def draw_text(text, font, text_colour, x, y):
     img = font.render(text, True, text_colour)
     screen.blit(img, (x, y))
+
+
+def reset_game():
+    obstacle_group.empty()
+    flappy.rect.x = 100
+    flappy.rect.y = int(screen_height / 2)
 
 
 # main object classes
@@ -109,12 +116,38 @@ class Obstacle(pygame.sprite.Sprite):
         if self.rect.right < 0:
             self.kill()
 
+class Restart():
+    def __init__(self, x, y, image):
+        self.image = image
+        self.rect = self.image.get_rect()
+        self.rect.topleft = (x, y)
+
+    def draw(self):
+
+        action = False
+
+        # get mouse position
+        pos = pygame.mouse.get_pos()
+
+        # check if mouse is over button
+        if self.rect.collidepoint(pos):
+            if pygame.mouse.get_pressed()[0] == 1:
+                action = True
+
+        # draw restart button
+        screen.blit(self.image, (self.rect.x, self.rect.y))
+
+        return action
+
 
 bird_group = pygame.sprite.Group()
 obstacle_group = pygame.sprite.Group()
 
 flappy = Bird(100, int(screen_height / 2))
 bird_group.add(flappy)
+
+# create restart button instance
+restart = Restart(screen_width // 2 - 50, screen_height // 2 - 100, day_restart)
 
 run = True
 while run:
@@ -142,7 +175,7 @@ while run:
                 score += 1
                 pass_obstacle = False
 
-    draw_text(str(score), font, white, int(screen_width / 2 - 10), 20)
+    draw_text(str(score), game_font, white, int(screen_width / 2 - 10), 20)
 
     # check for collision
     if pygame.sprite.groupcollide(bird_group, obstacle_group, False, False) or flappy.rect.top < 0:
@@ -171,6 +204,11 @@ while run:
             ground_scroll = 0
 
         obstacle_group.update()
+
+    # check  game over and reset
+    if game_over:
+        if restart.draw():
+            game_over = False
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
