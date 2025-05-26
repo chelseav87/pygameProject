@@ -1,5 +1,6 @@
 import pygame
 from pygame.locals import *
+import random
 
 pygame.init()
 
@@ -19,7 +20,7 @@ flying = False
 game_over = False
 obstacle_gap = 150
 obstacle_frequency = 1500
-last_obstacle = pygame.time.get_ticks()
+last_obstacle = pygame.time.get_ticks() - obstacle_frequency
 
 # load images
 day_background = pygame.image.load("images/day_background.png")
@@ -92,6 +93,8 @@ class Obstacle(pygame.sprite.Sprite):
 
     def update(self):
         self.rect.x -= scroll_speed
+        if self.rect.right < 0:
+            self.kill()
 
 
 bird_group = pygame.sprite.Group()
@@ -111,30 +114,37 @@ while run:
     bird_group.draw(screen)
     bird_group.update()
     obstacle_group.draw(screen)
-    obstacle_group.update()
 
     # draw ground
     screen.blit(day_ground, (ground_scroll, 558))
+
+    # check for collision
+    if pygame.sprite.groupcollide(bird_group, obstacle_group, False, False) or flappy.rect.top < 0:
+        game_over = True
 
     # check if bird has hit the ground
     if flappy.rect.bottom >= 558:
         game_over = True
         flying = False
 
-    if not game_over:
+    if not game_over and flying:
 
         # generate new obstacles
         time_now = pygame.time.get_ticks()
         if time_now - last_obstacle > obstacle_frequency:
-            btm_obstacle = Obstacle(300, int(screen_height / 2), -1)
-            top_obstacle = Obstacle(300, int(screen_height / 2), 1)
+            obstacle_height = random.randint(-100, 100)
+            btm_obstacle = Obstacle(screen_width, int(screen_height / 2) + obstacle_height, -1)
+            top_obstacle = Obstacle(screen_width, int(screen_height / 2) + obstacle_height, 1)
             obstacle_group.add(btm_obstacle)
             obstacle_group.add(top_obstacle)
+            last_obstacle = time_now
 
         # scroll ground
         ground_scroll -= scroll_speed
         if abs(ground_scroll) > 35:
             ground_scroll = 0
+
+        obstacle_group.update()
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
