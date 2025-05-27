@@ -12,7 +12,6 @@ pygame.display.set_caption("Flappy Bird")
 # main variables
 clock = pygame.time.Clock()
 fps = 60
-game_font = pygame.font.SysFont("Bauhaus 93", 60)
 white = (255, 255, 255)
 
 # load images
@@ -21,8 +20,9 @@ day_ground = pygame.image.load("images/day_ground.png")
 day_restart = pygame.image.load("images/day_restart.png")
 
 
-def draw_text(text, font, text_colour, x, y):
-    img = font.render(text, True, text_colour)
+def draw_text(text, font_name, font_size, text_colour, x, y):
+    game_font = pygame.font.SysFont(font_name, font_size)
+    img = game_font.render(text, True, text_colour)
     screen.blit(img, (x, y))
 
 
@@ -34,10 +34,7 @@ def main_menu():
 
         menu_pos = pygame.mouse.get_pos()
 
-        # menu_text = get_font(100).render("MAIN MENU", True, white)
-        # screen_width = 634
-        # screen_height = 636
-        draw_text("Main Menu", game_font, white, 190, 118)
+        draw_text("FLAPPY BIRD", "Bauhaus 93", 90, white, 70, 118)
 
         pygame.display.update()
 
@@ -183,7 +180,7 @@ def play():
                     score += 1
                     pass_obstacle = False
 
-        draw_text(str(score), game_font, white, int(screen_width / 2 - 10), 20)
+        draw_text(str(score), "Bauhaus 93", 50, white, int(screen_width / 2 - 10), 20)
 
         # check for collision
         if pygame.sprite.groupcollide(bird_group, obstacle_group, False, False) or flappy.rect.top < 0:
@@ -236,4 +233,4 @@ def quit_game():
     print("quit")
 
 
-main_menu()
+play()
