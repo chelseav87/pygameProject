@@ -1,5 +1,4 @@
 import pygame
-from pygame.locals import *
 import random
 
 pygame.init()
@@ -13,13 +12,9 @@ screen_height = 636
 screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption("Flappy Bird")
 
-# define font
-game_font = pygame.font.SysFont("Bauhaus 93", 60)
-
-# define colours
-white = (255, 255, 255)
-
 # define game variables
+game_font = pygame.font.SysFont("Bauhaus 93", 60)
+white = (255, 255, 255)
 ground_scroll = 0
 scroll_speed = 4
 flying = False
@@ -45,6 +40,8 @@ def reset_game():
     obstacle_group.empty()
     flappy.rect.x = 100
     flappy.rect.y = int(screen_height / 2)
+    score = 0
+    return score
 
 
 # main object classes
@@ -209,6 +206,7 @@ while run:
     if game_over:
         if restart.draw():
             game_over = False
+            score = reset_game()
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
