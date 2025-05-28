@@ -20,6 +20,30 @@ day_ground = pygame.image.load("images/day_ground.png")
 day_restart = pygame.image.load("images/day_restart.png")
 
 
+# main classes
+class Button:
+    def __init__(self, x, y, image):
+        self.image = image
+        self.rect = self.image.get_rect()
+        self.rect.topleft = (x, y)
+
+    def draw(self):
+
+        action = False
+
+        # check if mouse is over button
+        pos = pygame.mouse.get_pos()
+        if self.rect.collidepoint(pos):
+            if pygame.mouse.get_pressed()[0] == 1:
+                action = True
+
+        # draw button
+        screen.blit(self.image, (self.rect.x, self.rect.y))
+
+        return action
+
+
+# main functions
 def draw_text(text, font_name, font_size, text_colour, x, y):
     game_font = pygame.font.SysFont(font_name, font_size)
     img = game_font.render(text, True, text_colour)
@@ -27,17 +51,34 @@ def draw_text(text, font_name, font_size, text_colour, x, y):
 
 
 def main_menu():
+    # main menu options
+    play_button = Button(screen_width // 2 - 50, screen_height // 2 - 100, day_restart)
+    scoreboard_button = Button(screen_width // 2 - 50, screen_height // 2 - 50, day_restart)
+    quit_button = Button(screen_width // 2 - 50, screen_height // 2, day_restart)
+
     run_menu = True
     while run_menu:
+
+        clock.tick(fps)
+
         screen.blit(day_background, (0, -155))
         screen.blit(day_ground, (0, 558))
-
-        menu_pos = pygame.mouse.get_pos()
-
         draw_text("FLAPPY BIRD", "Bauhaus 93", 90, white, 70, 118)
+
+        if play_button.draw():
+            play()
+        if scoreboard_button.draw():
+            print("ajsbfja")
+        if quit_button.draw():
+            print("jasbag")
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                run_menu = False
 
         pygame.display.update()
 
+    pygame.quit()
 
 def play():
     # define game variables
@@ -126,28 +167,6 @@ def play():
             if self.rect.right < 0:
                 self.kill()
 
-    class Restart:
-        def __init__(self, x, y, image):
-            self.image = image
-            self.rect = self.image.get_rect()
-            self.rect.topleft = (x, y)
-
-        def draw(self):
-
-            action = False
-
-            restart_pos = pygame.mouse.get_pos()
-
-            # check if mouse is over button
-            if self.rect.collidepoint(restart_pos):
-                if pygame.mouse.get_pressed()[0] == 1:
-                    action = True
-
-            # draw restart button
-            screen.blit(self.image, (self.rect.x, self.rect.y))
-
-            return action
-
     bird_group = pygame.sprite.Group()
     obstacle_group = pygame.sprite.Group()
 
@@ -155,7 +174,7 @@ def play():
     bird_group.add(flappy)
 
     # create restart button instance
-    restart = Restart(screen_width // 2 - 50, screen_height // 2 - 100, day_restart)
+    restart_button = Button(screen_width // 2 - 50, screen_height // 2 - 100, day_restart)
 
     run_play = True
     while run_play:
@@ -210,9 +229,9 @@ def play():
 
             obstacle_group.update()
 
-        # check  game over and reset
+        # check game over and reset
         if game_over:
-            if restart.draw():
+            if restart_button.draw():
                 game_over = False
                 score = reset_game()
 
@@ -233,4 +252,4 @@ def quit_game():
     print("quit")
 
 
-play()
+main_menu()
