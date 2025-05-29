@@ -15,9 +15,9 @@ fps = 60
 white = (255, 255, 255)
 
 # load images
-day_background = pygame.image.load("images/day_background.png")
-day_ground = pygame.image.load("images/day_ground.png")
-day_restart = pygame.image.load("images/day_restart.png")
+day_background = pygame.image.load("assets/day_background.png")
+day_ground = pygame.image.load("assets/day_ground.png")
+day_restart = pygame.image.load("assets/day_restart.png")
 
 
 # main classes
@@ -44,17 +44,23 @@ class Button:
 
 
 # main functions
-def draw_text(text, font_name, font_size, text_colour, x, y):
-    game_font = pygame.font.SysFont(font_name, font_size)
+def draw_text(text, font_name, font_size, text_colour, x, y, center): # modded with AI
+    game_font = pygame.font.Font(font_name, font_size)
     img = game_font.render(text, True, text_colour)
-    screen.blit(img, (x, y))
+
+    if center:
+        text_rect = img.get_rect(center=(x, y))
+    else:
+        text_rect = img.get_rect(topleft=(x, y))
+
+    screen.blit(img, text_rect)
 
 
 def main_menu():
     # main menu options
-    play_button = Button(screen_width // 2 - 50, screen_height // 2 - 100, day_restart)
-    scoreboard_button = Button(screen_width // 2 - 50, screen_height // 2 - 50, day_restart)
-    quit_button = Button(screen_width // 2 - 50, screen_height // 2, day_restart)
+    play_button = Button(screen_width // 2 - 50, screen_height // 2 - 75, day_restart)
+    scoreboard_button = Button(screen_width // 2 - 50, screen_height // 2- 15, day_restart)
+    quit_button = Button(screen_width // 2 - 50, screen_height // 2 + 45, day_restart)
 
     run_menu = True
     while run_menu:
@@ -63,7 +69,7 @@ def main_menu():
 
         screen.blit(day_background, (0, -155))
         screen.blit(day_ground, (0, 558))
-        draw_text("FLAPPY BIRD", "Bauhaus 93", 90, white, 70, 118)
+        draw_text("FLAPPY BIRD", "assets/FlappyBirdy.ttf", 150, white, screen_width // 2, 160, True) # modded with AI
 
         if play_button.draw():
             play()
@@ -94,10 +100,10 @@ def play():
 
     def reset_game():
         obstacle_group.empty()
-        flappy.rect.x = 100
-        flappy.rect.y = int(screen_height / 2)
-        score = 0
-        return score
+        flappy.rect.x = 75
+        flappy.rect.y = int(screen_height / 2 - 50)
+        reset_score = 0
+        return reset_score
 
     # main object classes
     class Bird(pygame.sprite.Sprite):
@@ -109,7 +115,7 @@ def play():
             self.index = 0
             self.counter = 0
             for num in range(1, 4):
-                bird_anim = pygame.image.load(f"images/day_bird{num}.png")
+                bird_anim = pygame.image.load(f"assets/day_bird{num}.png")
                 self.images.append(bird_anim)
             self.image = self.images[self.index]
             self.rect = self.image.get_rect()
@@ -147,14 +153,14 @@ def play():
                 self.image = self.images[self.index]
 
                 # rotate bird
-                self.image = pygame.transform.rotate(self.images[self.index], self.vel * -2)
+                self.image = pygame.transform.rotate(self.images[self.index], self.vel * - 2)
             else:
                 self.image = pygame.transform.rotate(self.images[self.index], -90)
 
     class Obstacle(pygame.sprite.Sprite):
         def __init__(self, x, y, position):
             pygame.sprite.Sprite.__init__(self)
-            self.image = pygame.image.load("images/day_obstacle.png")
+            self.image = pygame.image.load("assets/day_obstacle.png")
             self.rect = self.image.get_rect()
             if position == 1:
                 self.image = pygame.transform.flip(self.image, False, True)
@@ -170,11 +176,13 @@ def play():
     bird_group = pygame.sprite.Group()
     obstacle_group = pygame.sprite.Group()
 
-    flappy = Bird(100, int(screen_height / 2))
+    flappy = Bird(100, int(screen_height / 2 - 40))
+
     bird_group.add(flappy)
 
-    # create restart button instance
+    # create button instances
     restart_button = Button(screen_width // 2 - 50, screen_height // 2 - 100, day_restart)
+    quit_button = Button(screen_width // 2 - 50, screen_height // 2 - 25, day_restart)
 
     run_play = True
     while run_play:
@@ -199,7 +207,7 @@ def play():
                     score += 1
                     pass_obstacle = False
 
-        draw_text(str(score), "Bauhaus 93", 50, white, int(screen_width / 2 - 10), 20)
+        draw_text(str(score), "assets/upheavtt.ttf", 50, white, screen_width // 2 + 10, 50, True) # modded with AI
 
         # check for collision
         if pygame.sprite.groupcollide(bird_group, obstacle_group, False, False) or flappy.rect.top < 0:
@@ -234,6 +242,8 @@ def play():
             if restart_button.draw():
                 game_over = False
                 score = reset_game()
+            if quit_button.draw():
+                main_menu()
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -243,6 +253,7 @@ def play():
 
         pygame.display.update()
 
+    pygame.quit()
 
 def scoreboard():
     print("scoreboard")

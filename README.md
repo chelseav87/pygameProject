@@ -1,6 +1,6 @@
 # pygameProject
 
-pygameProject/images
+pygameProject/assets
 
     day_background.jpg: (Original) https://github.com/russs123/flappy_bird/blob/main/img/bg.png
     day_bird1.jpg: (Original) https://github.com/russs123/flappy_bird/tree/main/img/bird1.png
@@ -9,6 +9,7 @@ pygameProject/images
     day_ground.jpg: (Original) https://github.com/russs123/flappy_bird/tree/main/img/ground.png
     day_obstacle.jpg: (Original) https://github.com/russs123/flappy_bird/tree/main/img/pipe.png
     day_restart.jpg: (Original) https://github.com/russs123/flappy_bird/tree/main/img/restart.png
+    flappybirdy.ttf: https://www.dafont.com/flappybirdy.font
 
 original code (before modifications/AI)
 
