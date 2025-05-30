@@ -14,11 +14,6 @@ clock = pygame.time.Clock()
 fps = 60
 white = (255, 255, 255)
 
-# load images
-day_background = pygame.image.load("assets/day_background.png")
-day_ground = pygame.image.load("assets/day_ground.png")
-day_restart = pygame.image.load("assets/day_restart.png")
-
 
 # main classes
 class Button:
@@ -44,7 +39,7 @@ class Button:
 
 
 # main functions
-def draw_text(text, font_name, font_size, text_colour, x, y, center): # modded with AI
+def draw_text(text, font_name, font_size, text_colour, x, y, center):
     game_font = pygame.font.Font(font_name, font_size)
     img = game_font.render(text, True, text_colour)
 
@@ -56,27 +51,72 @@ def draw_text(text, font_name, font_size, text_colour, x, y, center): # modded w
     screen.blit(img, text_rect)
 
 
+# load images and handle day/night mode
+themes = {
+    "day": {
+        "background": "assets/day_background.png",
+        "ground": "assets/day_ground.png",
+        "restart": "assets/day_restart.png"
+    },
+    "night": {
+        "background": "assets/night_background.png",
+        "ground": "assets/night_ground.png",
+        "restart": "assets/night_restart.png"
+    }
+}
+
+# initial mode and images
+current_theme = "day"
+active_day = True
+active_night = False
+
+image_background = pygame.image.load(themes[current_theme]["background"])
+image_ground = pygame.image.load(themes[current_theme]["ground"])
+image_restart = pygame.image.load(themes[current_theme]["restart"])
+
+# create button instances
+day_mode_button = Button(screen_width // 2 + 70, screen_height // 2, image_restart)
+night_mode_button = Button(screen_width // 2, screen_height // 2, image_restart)
+
+
+def switch_theme(theme_name):
+    global image_background, image_ground, image_restart
+    global active_day, active_night, current_theme
+
+    current_theme = theme_name
+    assets = themes[theme_name]
+    image_background = pygame.image.load(assets["background"])
+    image_ground = pygame.image.load(assets["ground"])
+    image_restart = pygame.image.load(assets["restart"])
+
+    active_day = (theme_name == "day")
+    active_night = not active_day
+
+
 def main_menu():
-    # main menu options
-    play_button = Button(screen_width // 2 - 50, screen_height // 2 - 75, day_restart)
-    scoreboard_button = Button(screen_width // 2 - 50, screen_height // 2- 15, day_restart)
-    quit_button = Button(screen_width // 2 - 50, screen_height // 2 + 45, day_restart)
+    play_button = Button(screen_width // 2 - 50, screen_height // 2 - 75, image_restart)
+    scoreboard_button = Button(screen_width // 2 - 50, screen_height // 2, image_restart)
+    quit_button = Button(screen_width // 2 - 50, screen_height // 2 + 75, image_restart)
 
     run_menu = True
     while run_menu:
 
         clock.tick(fps)
 
-        screen.blit(day_background, (0, -155))
-        screen.blit(day_ground, (0, 558))
-        draw_text("FLAPPY BIRD", "assets/FlappyBirdy.ttf", 150, white, screen_width // 2, 160, True) # modded with AI
+        screen.blit(image_background, (0, -155))
+        screen.blit(image_ground, (0, 558))
+        draw_text("FLAPPY BIRD", "assets/FlappyBirdRegular.ttf", 120, white, screen_width // 2, 160, True)
 
         if play_button.draw():
             play()
         if scoreboard_button.draw():
             print("ajsbfja")
         if quit_button.draw():
-            print("jasbag")
+            break
+        if day_mode_button.draw():
+            switch_theme("day")
+        if night_mode_button.draw():
+            switch_theme("night")
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -86,8 +126,8 @@ def main_menu():
 
     pygame.quit()
 
+
 def play():
-    # define game variables
     ground_scroll = 0
     scroll_speed = 4
     flying = False
@@ -108,14 +148,15 @@ def play():
     # main object classes
     class Bird(pygame.sprite.Sprite):
         def __init__(self, x, y):
-
-            # create bird
             pygame.sprite.Sprite.__init__(self)
             self.images = []
             self.index = 0
             self.counter = 0
             for num in range(1, 4):
-                bird_anim = pygame.image.load(f"assets/day_bird{num}.png")
+                if active_day:
+                    bird_anim = pygame.image.load(f"assets/day_bird{num}.png")
+                if active_night:
+                    bird_anim = pygame.image.load(f"assets/day_bird{num}.png")
                 self.images.append(bird_anim)
             self.image = self.images[self.index]
             self.rect = self.image.get_rect()
@@ -151,8 +192,6 @@ def play():
                     if self.index >= len(self.images):
                         self.index = 0
                 self.image = self.images[self.index]
-
-                # rotate bird
                 self.image = pygame.transform.rotate(self.images[self.index], self.vel * - 2)
             else:
                 self.image = pygame.transform.rotate(self.images[self.index], -90)
@@ -160,7 +199,10 @@ def play():
     class Obstacle(pygame.sprite.Sprite):
         def __init__(self, x, y, position):
             pygame.sprite.Sprite.__init__(self)
-            self.image = pygame.image.load("assets/day_obstacle.png")
+            if active_day:
+                self.image = pygame.image.load("assets/day_obstacle.png")
+            if active_night:
+                self.image = pygame.image.load("assets/day_obstacle.png")
             self.rect = self.image.get_rect()
             if position == 1:
                 self.image = pygame.transform.flip(self.image, False, True)
@@ -181,8 +223,8 @@ def play():
     bird_group.add(flappy)
 
     # create button instances
-    restart_button = Button(screen_width // 2 - 50, screen_height // 2 - 100, day_restart)
-    quit_button = Button(screen_width // 2 - 50, screen_height // 2 - 25, day_restart)
+    restart_button = Button(screen_width // 2 - 50, screen_height // 2 - 100, image_restart)
+    quit_button = Button(screen_width // 2 - 50, screen_height // 2 - 25, image_restart)
 
     run_play = True
     while run_play:
@@ -190,11 +232,11 @@ def play():
         clock.tick(fps)
 
         # draw background and objects
-        screen.blit(day_background, (0, -155))
+        screen.blit(image_background, (0, -155))
         bird_group.draw(screen)
         bird_group.update()
         obstacle_group.draw(screen)
-        screen.blit(day_ground, (ground_scroll, 558))
+        screen.blit(image_ground, (ground_scroll, 558))
 
         # check and draw score
         if len(obstacle_group) > 0:
@@ -207,7 +249,7 @@ def play():
                     score += 1
                     pass_obstacle = False
 
-        draw_text(str(score), "assets/upheavtt.ttf", 50, white, screen_width // 2 + 10, 50, True) # modded with AI
+        draw_text(str(score), "assets/FlappyBirdRegular.ttf", 70, white, screen_width // 2 + 10, 50, True)
 
         # check for collision
         if pygame.sprite.groupcollide(bird_group, obstacle_group, False, False) or flappy.rect.top < 0:
@@ -254,6 +296,7 @@ def play():
         pygame.display.update()
 
     pygame.quit()
+
 
 def scoreboard():
     print("scoreboard")

@@ -1,6 +1,6 @@
 # pygameProject
 
-pygameProject/assets
+credits for pygameProject/assets
 
     day_background.jpg: (Original) https://github.com/russs123/flappy_bird/blob/main/img/bg.png
     day_bird1.jpg: (Original) https://github.com/russs123/flappy_bird/tree/main/img/bird1.png
@@ -9,9 +9,9 @@ pygameProject/assets
     day_ground.jpg: (Original) https://github.com/russs123/flappy_bird/tree/main/img/ground.png
     day_obstacle.jpg: (Original) https://github.com/russs123/flappy_bird/tree/main/img/pipe.png
     day_restart.jpg: (Original) https://github.com/russs123/flappy_bird/tree/main/img/restart.png
-    flappybirdy.ttf: https://www.dafont.com/flappybirdy.font
+    FlappyBirdRegular.ttf: https://www.fontspace.com/flappy-bird-font-f21349
 
-original code (before modifications/AI)
+original "Flappy Bird Game"
 
     import pygame
     import random
@@ -232,3 +232,33 @@ original code (before modifications/AI)
         pygame.display.update()
     
     pygame.quit()
+
+original "Day & Night Mode"
+
+    image_background = pygame.image.load("assets/day_background.png")
+    image_ground = pygame.image.load("assets/day_ground.png")
+    image_restart = pygame.image.load("assets/day_restart.png")
+    
+    active_day = True
+    active_night = False
+    
+    day_mode_button = Button(screen_width // 2 + 70, screen_height // 2, image_restart)
+    night_mode_button = Button(screen_width // 2, screen_height // 2, image_restart)
+    
+    
+    def day_mode():
+        global image_background, image_ground, image_restart, active_day, active_night
+        image_background = pygame.image.load("assets/day_background.png")
+        image_ground = pygame.image.load("assets/day_ground.png")
+        image_restart = pygame.image.load("assets/day_restart.png")
+        active_day = True
+        active_night = False
+    
+    
+    def night_mode():
+        global image_background, image_ground, image_restart, active_day, active_night
+        image_background = pygame.image.load("assets/night_background.png")
+        image_ground = pygame.image.load("assets/night_ground.png")
+        image_restart = pygame.image.load("assets/night_restart.png")
+        active_day = False
+        active_night = True
