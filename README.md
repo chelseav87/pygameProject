@@ -2,14 +2,36 @@
 
 credits for pygameProject/assets
 
-    day_background.jpg: (Original) https://github.com/russs123/flappy_bird/blob/main/img/bg.png
-    day_bird1.jpg: (Original) https://github.com/russs123/flappy_bird/tree/main/img/bird1.png
-    day_bird2.jpg: (Original) https://github.com/russs123/flappy_bird/tree/main/img/bird2.png
-    day_bird3.jpg: (Original) https://github.com/russs123/flappy_bird/tree/main/img/bird3.png
-    day_ground.jpg: (Original) https://github.com/russs123/flappy_bird/tree/main/img/ground.png
-    day_obstacle.jpg: (Original) https://github.com/russs123/flappy_bird/tree/main/img/pipe.png
-    day_restart.jpg: (Original) https://github.com/russs123/flappy_bird/tree/main/img/restart.png
+    https://github.com/russs123/flappy_bird/blob/main/img/bg.png
+        - day_background.jpg (redrawn)
+        - night_background.jpg (redrawn, reference: https://www.shutterstock.com/image-vector/cloudy-night-sky-pixel-art-trendy-2389796343)
+    https://github.com/russs123/flappy_bird/tree/main/img/bird1.png
+        - day_bird1.jpg
+        - night_bird1.jpg (redrawn)
+    https://github.com/russs123/flappy_bird/tree/main/img/bird2.png
+        - day_bird2.jpg
+        - night_bird2.jpg (redrawn)
+    https://github.com/russs123/flappy_bird/tree/main/img/bird3.png
+        - day_bird3.jpg
+        - night_bird3.jpg (redrawn)
+    day_ground.jpg: https://github.com/russs123/flappy_bird/tree/main/img/ground.png
+        - day_ground.jpg
+        - night_ground.jpg (redrawn)
+    day_obstacle.jpg: https://github.com/russs123/flappy_bird/tree/main/img/pipe.png
+        - day_obstacle.jpg
+        - night_obstacle.jpg (redrawn)
+    day_restart.jpg: https://github.com/russs123/flappy_bird/tree/main/img/restart.png
+        - day_main.jpg (redrawn)
+        - day_play.jpg (redrawn)
+        - day_quit.jpg (redrawn)
+        - day_restart.jpg
+        - night_main.jpg (redrawn)
+        - night_play.jpg (redrawn)
+        - night_quit.jpg (redrawn)
+        - night_restart.jpg (redrawn)
+
     FlappyBirdRegular.ttf: https://www.fontspace.com/flappy-bird-font-f21349
+    day_mode.jpg, night_light1.jpg, night_light2.jpg, night_light3.jpg, night_mode: original
 
 original "Flappy Bird Game"
 

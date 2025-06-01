@@ -95,8 +95,7 @@ def switch_theme(theme_name):
 
 def main_menu():
     play_button = Button(screen_width // 2 - 50, screen_height // 2 - 75, image_restart)
-    scoreboard_button = Button(screen_width // 2 - 50, screen_height // 2, image_restart)
-    quit_button = Button(screen_width // 2 - 50, screen_height // 2 + 75, image_restart)
+    quit_button = Button(screen_width // 2 - 50, screen_height // 2, image_restart)
 
     run_menu = True
     while run_menu:
@@ -109,8 +108,6 @@ def main_menu():
 
         if play_button.draw():
             play()
-        if scoreboard_button.draw():
-            print("ajsbfja")
         if quit_button.draw():
             break
         if day_mode_button.draw():
@@ -296,14 +293,6 @@ def play():
         pygame.display.update()
 
     pygame.quit()
-
-
-def scoreboard():
-    print("scoreboard")
-
-
-def quit_game():
-    print("quit")
 
 
 main_menu()
