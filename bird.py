@@ -60,6 +60,7 @@ themes = {
         "ground": "assets/images/day_ground.png",
         "main": "assets/images/day_main.png",
         "mode": "assets/images/day_mode.png",
+        "obstacle": "assets/images/day_obstacle.png",
         "play": "assets/images/day_play.png",
         "quit": "assets/images/day_quit.png",
         "restart": "assets/images/day_restart.png"
@@ -69,6 +70,7 @@ themes = {
         "ground": "assets/images/night_ground.png",
         "main": "assets/images/night_main.png",
         "mode": "assets/images/night_mode.png",
+        "obstacle": "assets/images/night_obstacle.png",
         "play": "assets/images/night_play.png",
         "quit": "assets/images/night_quit.png",
         "restart": "assets/images/night_restart.png"
@@ -84,13 +86,18 @@ image_background = pygame.image.load(themes[current_theme]["background"])
 image_ground = pygame.image.load(themes[current_theme]["ground"])
 image_main = pygame.image.load(themes[current_theme]["main"])
 image_mode = pygame.image.load(themes[current_theme]["mode"])
+image_obstacle = pygame.image.load(themes[current_theme]["obstacle"])
 image_play = pygame.image.load(themes[current_theme]["play"])
 image_quit = pygame.image.load(themes[current_theme]["quit"])
 image_restart = pygame.image.load(themes[current_theme]["restart"])
 
+obstacle_image_top = pygame.transform.flip(image_obstacle, False, True)
+obstacle_image_bottom = image_obstacle.copy()
+
 
 def switch_theme(theme_name):
-    global image_background, image_ground, image_main, image_mode, image_play, image_quit, image_restart
+    global image_background, image_ground, image_main, image_mode, image_obstacle, image_play, image_quit, image_restart
+    global obstacle_image_top, obstacle_image_bottom
     global active_day, active_night, current_theme
 
     current_theme = theme_name
@@ -99,9 +106,13 @@ def switch_theme(theme_name):
     image_ground = pygame.image.load(assets["ground"])
     image_main = pygame.image.load(themes[current_theme]["main"])
     image_mode = pygame.image.load(themes[current_theme]["mode"])
+    image_obstacle = pygame.image.load(themes[current_theme]["obstacle"])
     image_play = pygame.image.load(themes[current_theme]["play"])
     image_quit = pygame.image.load(themes[current_theme]["quit"])
     image_restart = pygame.image.load(assets["restart"])
+
+    obstacle_image_top = pygame.transform.flip(image_obstacle, False, True)
+    obstacle_image_bottom = image_obstacle.copy()
 
     active_day = (theme_name == "day")
     active_night = not active_day
@@ -217,16 +228,14 @@ def play():
 
     class Obstacle(pygame.sprite.Sprite):
         def __init__(self, x, y, position):
-            pygame.sprite.Sprite.__init__(self)
-            if active_day:
-                self.image = pygame.image.load("assets/images/day_obstacle.png")
-            if active_night:
-                self.image = pygame.image.load("assets/images/night_obstacle.png")
-            self.rect = self.image.get_rect()
+            super().__init__()
             if position == 1:
-                self.image = pygame.transform.flip(self.image, False, True)
+                self.image = obstacle_image_top
+                self.rect = self.image.get_rect()
                 self.rect.bottomleft = [x, y - int(obstacle_gap / 2)]
             if position == -1:
+                self.image = obstacle_image_bottom
+                self.rect = self.image.get_rect()
                 self.rect.topleft = [x, y + int(obstacle_gap / 2)]
 
         def update(self):
