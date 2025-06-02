@@ -14,6 +14,7 @@ pygame.display.set_caption("Flappy Bird")
 clock = pygame.time.Clock()
 fps = 60
 white = (255, 255, 255)
+high_score = 0
 
 
 # main classes
@@ -55,22 +56,22 @@ def draw_text(text, font_name, font_size, text_colour, x, y, center):
 # load images and handle day/night mode
 themes = {
     "day": {
-        "background": "assets/day_background.png",
-        "ground": "assets/day_ground.png",
-        "main": "assets/day_main.png",
-        "mode": "assets/day_mode.png",
-        "play": "assets/day_play.png",
-        "quit": "assets/day_quit.png",
-        "restart": "assets/day_restart.png"
+        "background": "assets/images/day_background.png",
+        "ground": "assets/images/day_ground.png",
+        "main": "assets/images/day_main.png",
+        "mode": "assets/images/day_mode.png",
+        "play": "assets/images/day_play.png",
+        "quit": "assets/images/day_quit.png",
+        "restart": "assets/images/day_restart.png"
     },
     "night": {
-        "background": "assets/night_background.png",
-        "ground": "assets/night_ground.png",
-        "main": "assets/night_main.png",
-        "mode": "assets/night_mode.png",
-        "play": "assets/night_play.png",
-        "quit": "assets/night_quit.png",
-        "restart": "assets/night_restart.png"
+        "background": "assets/images/night_background.png",
+        "ground": "assets/images/night_ground.png",
+        "main": "assets/images/night_main.png",
+        "mode": "assets/images/night_mode.png",
+        "play": "assets/images/night_play.png",
+        "quit": "assets/images/night_quit.png",
+        "restart": "assets/images/night_restart.png"
     }
 }
 
@@ -118,7 +119,7 @@ def main_menu():
 
         screen.blit(image_background, (0, 0))
         screen.blit(image_ground, (0, 558))
-        draw_text("FLAPPY BIRD", "assets/FlappyBirdRegular.ttf", 120, white, screen_width // 2, 160, True)
+        draw_text("FLAPPY BIRD", "assets/fonts/FlappyBirdRegular.ttf", 120, white, screen_width // 2, 160, True)
 
         if play_button.draw():
             play()
@@ -145,6 +146,7 @@ def main_menu():
 
 
 def play():
+    global high_score
     ground_scroll = 0
     scroll_speed = 4
     flying = False
@@ -171,9 +173,9 @@ def play():
             self.counter = 0
             for num in range(1, 4):
                 if active_day:
-                    bird_anim = pygame.image.load(f"assets/day_bird{num}.png")
+                    bird_anim = pygame.image.load(f"assets/images/day_bird{num}.png")
                 if active_night:
-                    bird_anim = pygame.image.load(f"assets/night_bird{num}.png")
+                    bird_anim = pygame.image.load(f"assets/images/night_bird{num}.png")
                 self.images.append(bird_anim)
             self.image = self.images[self.index]
             self.rect = self.image.get_rect()
@@ -217,9 +219,9 @@ def play():
         def __init__(self, x, y, position):
             pygame.sprite.Sprite.__init__(self)
             if active_day:
-                self.image = pygame.image.load("assets/day_obstacle.png")
+                self.image = pygame.image.load("assets/images/day_obstacle.png")
             if active_night:
-                self.image = pygame.image.load("assets/night_obstacle.png")
+                self.image = pygame.image.load("assets/images/night_obstacle.png")
             self.rect = self.image.get_rect()
             if position == 1:
                 self.image = pygame.transform.flip(self.image, False, True)
@@ -266,7 +268,8 @@ def play():
                     score += 1
                     pass_obstacle = False
 
-        draw_text(str(score), "assets/FlappyBirdRegular.ttf", 70, white, screen_width // 2 + 10, 50, True)
+        draw_text(str(score), "assets/fonts/FlappyBirdRegular.ttf", 70, white, screen_width // 2 + 10, 50, True)
+        draw_text(f"HI {str(high_score)}", "assets/fonts/FlappyBirdRegular.ttf", 40, white, 10, 600, False)
 
         # check for collision
         if pygame.sprite.groupcollide(bird_group, obstacle_group, False, False) or flappy.rect.top < 0:
@@ -296,7 +299,9 @@ def play():
 
             obstacle_group.update()
 
-        # check game over and reset
+        if score > high_score:
+            high_score = score
+
         if game_over:
             if restart_button.draw():
                 game_over = False
