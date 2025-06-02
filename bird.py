@@ -1,5 +1,6 @@
 import pygame
 import random
+import time
 
 pygame.init()
 
@@ -56,11 +57,19 @@ themes = {
     "day": {
         "background": "assets/day_background.png",
         "ground": "assets/day_ground.png",
+        "main": "assets/day_main.png",
+        "mode": "assets/day_mode.png",
+        "play": "assets/day_play.png",
+        "quit": "assets/day_quit.png",
         "restart": "assets/day_restart.png"
     },
     "night": {
         "background": "assets/night_background.png",
         "ground": "assets/night_ground.png",
+        "main": "assets/night_main.png",
+        "mode": "assets/night_mode.png",
+        "play": "assets/night_play.png",
+        "quit": "assets/night_quit.png",
         "restart": "assets/night_restart.png"
     }
 }
@@ -72,21 +81,25 @@ active_night = False
 
 image_background = pygame.image.load(themes[current_theme]["background"])
 image_ground = pygame.image.load(themes[current_theme]["ground"])
+image_main = pygame.image.load(themes[current_theme]["main"])
+image_mode = pygame.image.load(themes[current_theme]["mode"])
+image_play = pygame.image.load(themes[current_theme]["play"])
+image_quit = pygame.image.load(themes[current_theme]["quit"])
 image_restart = pygame.image.load(themes[current_theme]["restart"])
-
-# create button instances
-day_mode_button = Button(screen_width // 2 + 70, screen_height // 2, image_restart)
-night_mode_button = Button(screen_width // 2, screen_height // 2, image_restart)
 
 
 def switch_theme(theme_name):
-    global image_background, image_ground, image_restart
+    global image_background, image_ground, image_main, image_mode, image_play, image_quit, image_restart
     global active_day, active_night, current_theme
 
     current_theme = theme_name
     assets = themes[theme_name]
     image_background = pygame.image.load(assets["background"])
     image_ground = pygame.image.load(assets["ground"])
+    image_main = pygame.image.load(themes[current_theme]["main"])
+    image_mode = pygame.image.load(themes[current_theme]["mode"])
+    image_play = pygame.image.load(themes[current_theme]["play"])
+    image_quit = pygame.image.load(themes[current_theme]["quit"])
     image_restart = pygame.image.load(assets["restart"])
 
     active_day = (theme_name == "day")
@@ -94,15 +107,16 @@ def switch_theme(theme_name):
 
 
 def main_menu():
-    play_button = Button(screen_width // 2 - 50, screen_height // 2 - 75, image_restart)
-    quit_button = Button(screen_width // 2 - 50, screen_height // 2, image_restart)
+    play_button = Button(screen_width // 2 - 30, screen_height // 2 - 75, image_play)
+    quit_button = Button(screen_width // 2 - 30, screen_height // 2, image_quit)
+    mode_button = Button(screen_width - 50, screen_height - 625, image_mode)
 
     run_menu = True
     while run_menu:
 
         clock.tick(fps)
 
-        screen.blit(image_background, (0, -155))
+        screen.blit(image_background, (0, 0))
         screen.blit(image_ground, (0, 558))
         draw_text("FLAPPY BIRD", "assets/FlappyBirdRegular.ttf", 120, white, screen_width // 2, 160, True)
 
@@ -110,10 +124,16 @@ def main_menu():
             play()
         if quit_button.draw():
             break
-        if day_mode_button.draw():
-            switch_theme("day")
-        if night_mode_button.draw():
-            switch_theme("night")
+        if mode_button.draw():
+            if active_day:
+                switch_theme("night")
+            else:
+                switch_theme("day")
+
+            play_button = Button(screen_width // 2 - 30, screen_height // 2 - 75, image_play)
+            quit_button = Button(screen_width // 2 - 30, screen_height // 2, image_quit)
+            mode_button = Button(screen_width - 50, screen_height - 625, image_mode)
+            time.sleep(0.1)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -153,7 +173,7 @@ def play():
                 if active_day:
                     bird_anim = pygame.image.load(f"assets/day_bird{num}.png")
                 if active_night:
-                    bird_anim = pygame.image.load(f"assets/day_bird{num}.png")
+                    bird_anim = pygame.image.load(f"assets/night_bird{num}.png")
                 self.images.append(bird_anim)
             self.image = self.images[self.index]
             self.rect = self.image.get_rect()
@@ -199,7 +219,7 @@ def play():
             if active_day:
                 self.image = pygame.image.load("assets/day_obstacle.png")
             if active_night:
-                self.image = pygame.image.load("assets/day_obstacle.png")
+                self.image = pygame.image.load("assets/night_obstacle.png")
             self.rect = self.image.get_rect()
             if position == 1:
                 self.image = pygame.transform.flip(self.image, False, True)
@@ -221,7 +241,7 @@ def play():
 
     # create button instances
     restart_button = Button(screen_width // 2 - 50, screen_height // 2 - 100, image_restart)
-    quit_button = Button(screen_width // 2 - 50, screen_height // 2 - 25, image_restart)
+    main_button = Button(screen_width // 2 - 65, screen_height // 2 - 25, image_main)
 
     run_play = True
     while run_play:
@@ -229,7 +249,7 @@ def play():
         clock.tick(fps)
 
         # draw background and objects
-        screen.blit(image_background, (0, -155))
+        screen.blit(image_background, (0, 0))
         bird_group.draw(screen)
         bird_group.update()
         obstacle_group.draw(screen)
@@ -281,7 +301,7 @@ def play():
             if restart_button.draw():
                 game_over = False
                 score = reset_game()
-            if quit_button.draw():
+            if main_button.draw():
                 main_menu()
 
         for event in pygame.event.get():
@@ -291,8 +311,6 @@ def play():
                 flying = True
 
         pygame.display.update()
-
-    pygame.quit()
 
 
 main_menu()

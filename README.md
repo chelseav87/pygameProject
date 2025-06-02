@@ -3,35 +3,37 @@
 credits for pygameProject/assets
 
     https://github.com/russs123/flappy_bird/blob/main/img/bg.png
-        - day_background.jpg (redrawn)
-        - night_background.jpg (redrawn, reference: https://www.shutterstock.com/image-vector/cloudy-night-sky-pixel-art-trendy-2389796343)
+        - day_background.png (redrawn)
+        - night_background.png (redrawn, reference: https://www.shutterstock.com/image-vector/cloudy-night-sky-pixel-art-trendy-2389796343)
     https://github.com/russs123/flappy_bird/tree/main/img/bird1.png
-        - day_bird1.jpg
-        - night_bird1.jpg (redrawn)
+        - day_bird1.png
+        - night_bird1.png (redrawn)
     https://github.com/russs123/flappy_bird/tree/main/img/bird2.png
-        - day_bird2.jpg
-        - night_bird2.jpg (redrawn)
+        - day_bird2.png
+        - night_bird2.png (redrawn)
     https://github.com/russs123/flappy_bird/tree/main/img/bird3.png
-        - day_bird3.jpg
-        - night_bird3.jpg (redrawn)
-    day_ground.jpg: https://github.com/russs123/flappy_bird/tree/main/img/ground.png
-        - day_ground.jpg
-        - night_ground.jpg (redrawn)
-    day_obstacle.jpg: https://github.com/russs123/flappy_bird/tree/main/img/pipe.png
-        - day_obstacle.jpg
-        - night_obstacle.jpg (redrawn)
-    day_restart.jpg: https://github.com/russs123/flappy_bird/tree/main/img/restart.png
-        - day_main.jpg (redrawn)
-        - day_play.jpg (redrawn)
-        - day_quit.jpg (redrawn)
-        - day_restart.jpg
-        - night_main.jpg (redrawn)
-        - night_play.jpg (redrawn)
-        - night_quit.jpg (redrawn)
-        - night_restart.jpg (redrawn)
+        - day_bird3.png
+        - night_bird3.png (redrawn)
+    https://github.com/russs123/flappy_bird/tree/main/img/ground.png
+        - day_ground.png
+        - night_ground.png (redrawn)
+    https://github.com/russs123/flappy_bird/tree/main/img/pipe.png
+        - day_obstacle.png
+        - night_obstacle.png (redrawn)
+    https://github.com/russs123/flappy_bird/tree/main/img/restart.png
+        - day_main.png (redrawn)
+        - day_mode.png (redrawn)
+        - day_play.png (redrawn)
+        - day_quit.png (redrawn)
+        - day_restart.png
+        - night_main.png (redrawn)
+        - night_mode.png (redrawn)
+        - night_play.png (redrawn)
+        - night_quit.png (redrawn)
+        - night_restart.png (redrawn)
 
     FlappyBirdRegular.ttf: https://www.fontspace.com/flappy-bird-font-f21349
-    day_mode.jpg, music_off.jpg, music_on.jpg, night_light1.jpg, night_light2.jpg, night_light3.jpg, night_mode: original
+    night_light1.png, night_light2.png, night_light3.png, night_obstacle.png: original
 
 original "Flappy Bird Game"
 
