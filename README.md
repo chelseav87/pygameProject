@@ -33,7 +33,7 @@ credits for pygameProject/assets
         - night_restart.png (redrawn)
 
     FlappyBirdRegular.ttf: https://www.fontspace.com/flappy-bird-font-f21349
-    night_light1.png, night_light2.png, night_light3.png, night_obstacle.png: original
+    night_obstacle.png: original
 
 original "Flappy Bird Game"
 

@@ -251,8 +251,8 @@ def play():
     bird_group.add(flappy)
 
     # create button instances
-    restart_button = Button(screen_width // 2 - 50, screen_height // 2 - 100, image_restart)
-    main_button = Button(screen_width // 2 - 65, screen_height // 2 - 25, image_main)
+    restart_button = Button(screen_width // 2 - 50, screen_height // 2 - 115, image_restart)
+    main_button = Button(screen_width // 2 - 65, screen_height // 2 - 40, image_main)
 
     run_play = True
     while run_play:
@@ -280,6 +280,9 @@ def play():
         draw_text(str(score), "assets/fonts/FlappyBirdRegular.ttf", 70, white, screen_width // 2 + 10, 50, True)
         draw_text(f"HI {str(high_score)}", "assets/fonts/FlappyBirdRegular.ttf", 40, white, 10, 600, False)
 
+        if not game_over and not flying:
+            draw_text("LMB to jump", "assets/fonts/FlappyBirdRegular.ttf", 40, white, 200, 200, False)
+
         # check for collision
         if pygame.sprite.groupcollide(bird_group, obstacle_group, False, False) or flappy.rect.top < 0:
             game_over = True
@@ -290,7 +293,6 @@ def play():
             flying = False
 
         if not game_over and flying:
-
             # generate new obstacles
             time_now = pygame.time.get_ticks()
             if time_now - last_obstacle > obstacle_frequency:
@@ -316,7 +318,7 @@ def play():
                 game_over = False
                 score = reset_game()
             if main_button.draw():
-                main_menu()
+                break
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
