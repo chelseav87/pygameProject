@@ -11,7 +11,7 @@ SCREEN_HEIGHT = 636
 SCREEN = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("Flappy Bird")
 CLOCK = pygame.time.Clock()
-FPS = 120
+FPS = 60
 WHITE = (255, 255, 255)
 high_score = 0
 
@@ -85,7 +85,6 @@ themes = {
 
 current_theme = "day"
 active_day = True
-active_night = False
 
 image_background = pygame.image.load(themes[current_theme]["background"])
 image_ground = pygame.image.load(themes[current_theme]["ground"])
@@ -103,7 +102,7 @@ obstacle_image_bottom = image_obstacle.copy()
 def switch_theme(theme_name):
     global image_background, image_ground, image_main, image_mode, image_obstacle, image_play, image_quit, image_restart
     global obstacle_image_top, obstacle_image_bottom
-    global active_day, active_night, current_theme
+    global active_day, current_theme
 
     current_theme = theme_name
     assets = themes[theme_name]
@@ -120,7 +119,6 @@ def switch_theme(theme_name):
     obstacle_image_bottom = image_obstacle.copy()
 
     active_day = (theme_name == "day")
-    active_night = not active_day
 
 
 def main_menu():
@@ -190,9 +188,8 @@ def play():
             self.index = 0
             self.counter = 0
             for num in range(1, 4):
-                if active_day:
-                    bird_anim = pygame.image.load(f"assets/images/day_bird{num}.png")
-                if active_night:
+                bird_anim = pygame.image.load(f"assets/images/day_bird{num}.png")
+                if not active_day:
                     bird_anim = pygame.image.load(f"assets/images/night_bird{num}.png")
                 self.images.append(bird_anim)
             self.image = self.images[self.index]
