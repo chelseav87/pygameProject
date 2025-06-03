@@ -1,6 +1,17 @@
 # pygameProject
 
-credits for pygameProject/assets
+credits for pygameProject/assets/audio
+
+    sound_fall.wav: https://freesound.org/people/InspectorJ/sounds/402581/
+    sound_hit.wav: https://freesound.org/people/timgormly/sounds/170149/
+    sound_jump.wav: https://freesound.org/people/combine2005/sounds/488275/
+    sound_score.wav: https://freesound.org/people/timgormly/sounds/170147/
+
+credits for pygameProject/assets/fonts
+
+    FlappyBirdRegular.ttf: https://www.fontspace.com/flappy-bird-font-f21349
+
+credits for pygameProject/assets/images
 
     https://github.com/russs123/flappy_bird/blob/main/img/bg.png
         - day_background.png (redrawn)
@@ -31,8 +42,6 @@ credits for pygameProject/assets
         - night_play.png (redrawn)
         - night_quit.png (redrawn)
         - night_restart.png (redrawn)
-
-    FlappyBirdRegular.ttf: https://www.fontspace.com/flappy-bird-font-f21349
     night_obstacle.png: original
 
 original "Flappy Bird Game"
